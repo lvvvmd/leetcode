@@ -5,16 +5,21 @@ public:
 		return 0;
 	int rst = 0;
 	long long sum = 0;
+	multiset<long long> sumset;
 	for (int j = 0; j < nums.size(); j++){
-		sum = 0;
-		for (int i = j; i < nums.size(); i++){
-			sum += nums[i];
-			if (sum >= lower && sum <= upper)
-				rst++;
-		}
+		sum += nums[j];
+        if(sum >= lower && sum <= upper)
+            rst++;
+        if(lower!=upper){
+        auto m = sumset.lower_bound(sum - upper), n = sumset.upper_bound(sum - lower) ;
+        rst += distance(m, n);
+        }
+        else{
+            rst += sumset.count(sum - upper);
+        }
+		    
+		sumset.insert(sum);
 	}
-	//nums.erase(nums.begin());
-	//rst += countRangeSum(nums, lower, upper);
-	return rst;
+    return rst;
     }
 };
